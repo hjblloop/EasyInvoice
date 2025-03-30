@@ -1,16 +1,18 @@
-//import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import CreateInvoice from './CreateInvoice.tsx'; // Import the CreateInvoice component
+import Home from './Home.tsx';
 
 function App() {
-
   return (
-    <>
-      <div>
-        <h1>Hello World!</h1>
-        <p>This is sample text</p>
-      </div>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} /> {/* Main page */}
+        <Route path="/create-invoice" element={<CreateInvoice />} /> {/* Create Invoice page */}
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
