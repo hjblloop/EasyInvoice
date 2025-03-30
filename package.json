@@ -3,11 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/electron/main.ts",
+  "main": "dist/electron/main.js",
   "scripts": {
-    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron -r ts-node/register electron/main.ts\"",
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && npm run transpile && electron .\"",
+    "transpile": "tsc -p tsconfig.node.json",
     "prestart": "npx tsc",
-    "build": "tsc -b && vite build && electron-builder",
+    "build": "tsc -b && npx vite build && npx electron-builder",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "electron ."
@@ -28,9 +29,10 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0",
+    "vite": "^6.2.3",
     "wait-on": "^8.0.3"
   }
 }

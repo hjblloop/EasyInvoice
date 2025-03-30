@@ -5,13 +5,13 @@
     "lib": ["ES2022"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "outDir": "./dist",
+    "outDir": "./dist/electron",
+    "rootDir": "./electron",
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false,
 
     /* Linting */
     "strict": true,
@@ -20,5 +20,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["electron/**/*"]
 }

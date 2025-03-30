@@ -1,5 +1,9 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import { fileURLToPath } from 'url'; // Import this to handle ES module paths
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let mainWindow: BrowserWindow | null;
 
@@ -17,8 +21,10 @@ app.whenReady().then(() => {
   if (VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../react/index.html'));
   }
+
+  mainWindow.webContents.openDevTools();
 });
 
 app.on('window-all-closed', () => {
