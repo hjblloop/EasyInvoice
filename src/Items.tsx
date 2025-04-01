@@ -26,7 +26,7 @@ const Items = ({
         return (
             <div>
                 <h3>Items</h3>
-                <table border={1} style={{ width: '100%', marginBottom: '10px'}}>
+                <table className="custom-table">
                     <thead>
                         <tr>
                             <th>Item</th>
@@ -78,7 +78,7 @@ const Items = ({
                         ))}
                     </tbody>
                 </table>
-                <button onClick={handleAddItem}>Add Item</button>
+                <button className="add-item-button" onClick={handleAddItem}>Add Item</button>
             </div>
         )
 }
