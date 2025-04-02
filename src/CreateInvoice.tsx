@@ -2,6 +2,7 @@ import {useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Date from './Date.tsx';
 import Items from './Items.tsx';
+import InvoiceFrom from './InvoiceFrom.tsx';
 
 const CreateInvoice = () => {
     const [date, setDate] = useState({ month: '', day: '', year: '' });
@@ -10,7 +11,9 @@ const CreateInvoice = () => {
     const [serviceDateMessage, setServiceDateMessage] = useState('');
     const [invoiceNumber, setInvoiceNumber] = useState('');
     const [items, setItems] = useState([{ itemName: '', quantity: 0, price: 0, total: 0 }]);
-
+    const [invoiceFrom, setInvoiceFrom] = useState({ name: '', address: '', address2: '', city: '', state: '', zip: ''});
+    const [billTo, setBillTo] = useState('');
+    const [shipTo, setShipTo] = useState('');
 
     const navigateToHome = useNavigate();
 
@@ -28,6 +31,9 @@ const CreateInvoice = () => {
         <div>
             <button onClick={handleBackToHome}>Back to Home</button>
             <Date date={date} setDate={setDate} />
+            <InvoiceFrom invoiceFrom={invoiceFrom} setInvoiceFrom={setInvoiceFrom} />
+            <input type="text" value={billTo} onChange={(e)=> setBillTo(e.target.value)} placeholder="Bill To Information" />
+            <input type="text" value={shipTo} onChange={(e)=> setShipTo(e.target.value)} placeholder="Ship To Information" />
             <p>Service Period</p>
             <Date date={serviceDatePre} setDate={setServiceDatePre} />
             <Date date={serviceDatePost} setDate={setServiceDatePost} />
