@@ -18,6 +18,7 @@ const InvoiceFrom = ({
             <label>Name </label>
             <input
                 type="text"
+                name="name"
                 value={invoiceFrom.name}
                 onChange={handleChange}
                 placeholder="Name of the company"
@@ -26,6 +27,7 @@ const InvoiceFrom = ({
             <label>Address </label>
             <input
                 type="text"
+                name="address"
                 value={invoiceFrom.address}
                 onChange={handleChange}
                 placeholder="Address"
@@ -34,6 +36,7 @@ const InvoiceFrom = ({
             <label>Address 2 </label>
             <input
                 type="text"
+                name="address2"
                 value={invoiceFrom.address2}
                 onChange={handleChange}
                 placeholder="e.g. Suite 100, Unit 200"
@@ -42,6 +45,7 @@ const InvoiceFrom = ({
             <label>City </label>
             <input
                 type="text"
+                name="city"
                 value={invoiceFrom.city}
                 onChange={handleChange}
                 placeholder="City"
@@ -50,6 +54,7 @@ const InvoiceFrom = ({
             <label>State </label>
             <input  
                 type="text"
+                name="state"
                 value={invoiceFrom.state}
                 onChange={handleChange}
                 placeholder="State"
@@ -58,6 +63,7 @@ const InvoiceFrom = ({
             <label>Zip Code </label>
             <input
                 type="text"
+                name="zip"
                 value={invoiceFrom.zip}
                 onChange={handleChange}
                 placeholder="Zip Code"

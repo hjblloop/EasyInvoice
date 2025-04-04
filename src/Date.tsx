@@ -8,7 +8,7 @@ const Date = ( {date, setDate}: { date: { month: string; day: string; year: stri
         };
 
         return (
-            <div style={{ display: 'flex', gap: '10px'}}>
+            <div className="dateContainer">
                 <input
                     type="text"
                     placeholder="Month"
