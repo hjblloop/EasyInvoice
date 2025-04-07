@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import {useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import Date from './Date.tsx';
@@ -16,6 +16,7 @@ const CreateInvoice = () => {
     const [invoiceFrom, setInvoiceFrom] = useState({ name: '', address: '', address2: '', city: '', state: '', zip: ''});
     const [billTo, setBillTo] = useState('');
     const [shipTo, setShipTo] = useState('');
+    const [pdfUrl, setPdfUrl] = useState('');
 
     const navigateToHome = useNavigate();
 
@@ -50,7 +51,7 @@ const CreateInvoice = () => {
         doc.text(serviceDateMessage, 10, 90);
 
         //Items table
-        doc.text('Items:', 10, 100);
+        doc.text('Items: ', 10, 100);
         let y = 110;
         items.forEach((item, index) => {
             doc.text(`Item ${index + 1}: ${item.itemName}`, 10, y);
@@ -61,12 +62,17 @@ const CreateInvoice = () => {
         });
 
         const pdfData = doc.output('datauristring');
+        setPdfUrl(pdfData);
         const iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = '500px';
         iframe.src = pdfData;
         document.body.appendChild(iframe);
     }
+
+    useEffect(() => {
+        generatePDF();
+    }, [date, serviceDatePre, serviceDatePost, items, invoiceFrom, billTo, shipTo]);
 
     const handleBackToHome = () => {
         navigateToHome('/');
@@ -82,11 +88,18 @@ const CreateInvoice = () => {
                 <label>Ship To:</label>
                 <textarea id="shipto" value={shipTo} rows={4} onChange={(e)=> setShipTo(e.target.value)} placeholder="Ship To Information" />
             </div>
-             <p>Service Period</p>
+            <p>Service Period</p>
             <Date date={serviceDatePre} setDate={setServiceDatePre} />
             <Date date={serviceDatePost} setDate={setServiceDatePost} />
             <Items items={items} setItems={setItems}/>
             <button type="submit" onClick={handleSubmit}>Generate Invoice</button>
+            <div className="pdfPreviewContainer">
+                <iframe
+                    src={pdfUrl}
+                    title="PDF Preview"
+                    style={{ width: '100%', height: '100%', border: 'none' }}
+                ></iframe>
+            </div>
         </div>
     )
 }
