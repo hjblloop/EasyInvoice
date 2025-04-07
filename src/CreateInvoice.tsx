@@ -1,4 +1,4 @@
-import {useState, useEffect } from 'react';
+import {useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import Date from './Date.tsx';
@@ -16,15 +16,15 @@ const CreateInvoice = () => {
     const [invoiceFrom, setInvoiceFrom] = useState({ name: '', address: '', address2: '', city: '', state: '', zip: ''});
     const [billTo, setBillTo] = useState('');
     const [shipTo, setShipTo] = useState('');
-    const [pdfUrl, setPdfUrl] = useState('');
+    const [test, setTest] = useState('');
+    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const navigateToHome = useNavigate();
 
     const handleSubmit = () => {
         setInvoiceNumber(`${date.year}${date.month}${date.day}`);
         setServiceDateMessage(`Service period from ${serviceDatePre.month}/${serviceDatePre.day}/${serviceDatePre.year} to ${serviceDatePost.month}/${serviceDatePost.day}/${serviceDatePost.year}`);
-        alert(`Date: ${date.month}/${date.day}/${date.year} and Invoice Number: ${invoiceNumber} and service period from
-            ${serviceDateMessage}`);
+        
         generatePDF();
     }
 
@@ -33,7 +33,7 @@ const CreateInvoice = () => {
 
         //Invoice Title
         doc.setFontSize(18);
-        doc.text('Invoice', 10, 10);
+        doc.text('Invoice', 50, 10);
 
         //Invoice Number and Date
         doc.setFontSize(12);
@@ -43,8 +43,8 @@ const CreateInvoice = () => {
         //Bill To and Ship To
         doc.text('Bill To: ', 10, 40);
         doc.text(billTo, 10, 50);
-        doc.text('Ship To: ' + shipTo, 10, 60);
-        doc.text(shipTo, 10, 70);
+        doc.text('Ship To: ' + shipTo, 50, 40);
+        doc.text(shipTo, 50, 50);
 
         //Service Period
         doc.text('Service Period: ', 10, 80);
@@ -62,12 +62,9 @@ const CreateInvoice = () => {
         });
 
         const pdfData = doc.output('datauristring');
-        setPdfUrl(pdfData);
-        const iframe = document.createElement('iframe');
-        iframe.style.width = '100%';
-        iframe.style.height = '500px';
-        iframe.src = pdfData;
-        document.body.appendChild(iframe);
+        if (iframeRef.current) {
+            iframeRef.current.src = pdfData;
+        }
     }
 
     useEffect(() => {
@@ -77,27 +74,41 @@ const CreateInvoice = () => {
     const handleBackToHome = () => {
         navigateToHome('/');
     };
+
+    const handleTestChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTest(e.target.value);
+    }
     return (
         <div className="createInvoiceContainer">
-            <button onClick={handleBackToHome}>Back to Home</button>
-            <Date date={date} setDate={setDate} />
-            <InvoiceFrom invoiceFrom={invoiceFrom} setInvoiceFrom={setInvoiceFrom} />
-            <div className="billToShipTo">
-                <label>Bill To:</label>
-                <textarea id="billTo" value={billTo} rows={4} onChange={(e)=> setBillTo(e.target.value)} placeholder="Bill To Information" />
-                <label>Ship To:</label>
-                <textarea id="shipto" value={shipTo} rows={4} onChange={(e)=> setShipTo(e.target.value)} placeholder="Ship To Information" />
+            <div className="formContainer">
+                <button onClick={handleBackToHome}>Back to Home</button>
+                <Date date={date} setDate={setDate} />
+                <InvoiceFrom invoiceFrom={invoiceFrom} setInvoiceFrom={setInvoiceFrom} />
+                <div className="billToShipTo">
+                    <div className="billTo">
+                        <label>Bill To:</label>
+                        <textarea id="billTo" value={billTo} rows={4} onChange={(e)=> setBillTo(e.target.value)} placeholder="Bill To Information" />
+                    </div>
+                    <div className="shipTo">
+                        <label>Ship To:</label>
+                        <textarea id="shipto" value={shipTo} rows={4} onChange={(e)=> setShipTo(e.target.value)} placeholder="Ship To Information" />
+                    </div>
+                </div>
+                <p>Service Period</p>
+                <Date date={serviceDatePre} setDate={setServiceDatePre} />
+                <Date date={serviceDatePost} setDate={setServiceDatePost} />
+                <Items items={items} setItems={setItems}/>
+                <button type="submit" onClick={handleSubmit}>Generate Invoice</button>
+                <input type="text" onChange={handleTestChange} value={test} placeholder="test place"></input>
+                <div title="test title" dangerouslySetInnerHTML={{ __html: test}}>
+
+                </div>
             </div>
-            <p>Service Period</p>
-            <Date date={serviceDatePre} setDate={setServiceDatePre} />
-            <Date date={serviceDatePost} setDate={setServiceDatePost} />
-            <Items items={items} setItems={setItems}/>
-            <button type="submit" onClick={handleSubmit}>Generate Invoice</button>
             <div className="pdfPreviewContainer">
                 <iframe
-                    src={pdfUrl}
+                    ref={iframeRef}
                     title="PDF Preview"
-                    style={{ width: '100%', height: '100%', border: 'none' }}
+                    style={{ width: '100%', height: '100%' }}
                 ></iframe>
             </div>
         </div>
