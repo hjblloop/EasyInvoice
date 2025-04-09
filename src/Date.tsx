@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Date = ( {date, setDate}: { date: { month: string; day: string; year: string}; 
+const InvoiceDate = ( {date, setDate}: { date: { month: string; day: string; year: string}; 
     setDate: (newDate: {month: string; day: string; year: string}) => void }) => {
         const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const { name, value } = e.target;
@@ -40,4 +40,4 @@ const Date = ( {date, setDate}: { date: { month: string; day: string; year: stri
         );
 };
 
-export default Date;
+export default InvoiceDate;
